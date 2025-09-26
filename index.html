@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Like You The One Drinking What God Sip Dot Com</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .video-container {
+            position: relative;
+            margin: 30px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        iframe {
+            width: 640px;
+            height: 360px;
+            border: none;
+        }
+
+        .play-button {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255,107,107,0.3);
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255,107,107,0.4);
+        }
+
+        .lyrics-preview {
+            margin-top: 20px;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 700px) {
+            iframe {
+                width: 100%;
+                max-width: 560px;
+                height: 315px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Like You The One Drinking What God Sip Dot Com</h1>
+
+        <div class="video-container">
+            <iframe
+                id="youtube-video"
+                src="https://www.youtube.com/embed/3OnnDqH6Wj8?enablejsapi=1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+
+        <button class="play-button" onclick="startLyricsExperience()">
+            🎵 Start The Experience 🎵
+        </button>
+
+        <div class="lyrics-preview">
+            "Sometimes I get a good feeling..."
+        </div>
+    </div>
+
+    <script defer data-domain="lyrics.unmaintained.app" src="https://a.dbuidl.com/js/script.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+        let lyricsStarted = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-video', {
+                videoId: '3OnnDqH6Wj8',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+            window.player = player;
+        }
+
+        function onPlayerReady(event) {
+            console.log('YouTube player ready');
+        }
+
+        function onPlayerStateChange(event) {
+            console.log('Player state changed:', event.data);
+            // YouTube player states: -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (cued)
+        }
+
+        function startLyricsExperience() {
+            if (lyricsStarted) return;
+            lyricsStarted = true;
+
+            console.log('🎵 Starting lyrics experience!');
+
+            // Start the video
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+            }
+
+            // Define the lyrics timing - complete song mapped to YouTube captions
+            const lyricsSequence = [
+                { time: 9639, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 14360, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
+                { time: 20720, text: "i-get-a-good-feeling-yeah" },
+                { time: 23480, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 28960, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
+                { time: 33000, text: "i-get-a-good-feeling-yeah" },
+                { time: 36600, text: "yes-i-can-doubt-better-leave-im-runnin-with-this-plan" },
+                { time: 38480, text: "pull-me-grab-me-crabs-in-the-bucket-cant-have-me" },
+                { time: 42120, text: "ill-be-the-president-one-day" },
+                { time: 44719, text: "january-first-oh-you-like-that-gossip" },
+                { time: 47199, text: "like-you-the-one-drinking-what-god-sip-dot-com" },
+                { time: 49480, text: "now-i-got-a-word-for-your-tongue" },
+                { time: 51239, text: "how-many-rolling-stones-you-want" },
+                { time: 52960, text: "yeah-i-got-a-brand-new-spirit-speakin-and-its-done" },
+                { time: 54559, text: "woke-up-on-the-side-of-the-bed-like-i-won" },
+                { time: 57039, text: "talk-like-a-winner-my-chest-to-that-sun" },
+                { time: 57719, text: "g5-dealer-us-to-taiwan-now-who-can-say-that" },
+                { time: 60519, text: "i-wanna-play-back-mama-knew-i-was-a-needle-in-a-haystack" },
+                { time: 62879, text: "a-bugatti-boy-plus-maybach" },
+                { time: 64600, text: "i-got-a-feelin-its-a-rap-asap" },
+                { time: 66479, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 72320, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
+                { time: 78720, text: "i-get-a-good-feeling-yeah" },
+                { time: 81479, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 100000, text: "the-mountain-top-walk-on-water" },
+                { time: 103240, text: "i-got-power-feel-so-royal" },
+                { time: 105759, text: "one-second-imma-strike-all-you" },
+                { time: 106680, text: "diamond-platinum-no-more-for-you" },
+                { time: 110000, text: "got-adrenaline-never-givin-in" },
+                { time: 111719, text: "givin-ups-not-an-option-gotta-get-it-in" },
+                { time: 112680, text: "witness-i-got-the-heart-of-twenty-men" },
+                { time: 115960, text: "no-fear-go-to-sleep-in-the-lions-den" },
+                { time: 117960, text: "that-flow-that-spark-that-crown" },
+                { time: 119880, text: "youre-looking-at-the-king-of-the-jungle-now" },
+                { time: 121759, text: "stronger-than-ever-cant-hold-me-down" },
+                { time: 124079, text: "hundred-miles-gunning-from-the-pitchers-mound" },
+                { time: 126119, text: "straight-game-face-its-game-day" },
+                { time: 128039, text: "see-me-running-through-the-crowd-full-of-melee" },
+                { time: 130480, text: "no-trick-plays-im-bill-gates-take-a-genius-to-understand-me" },
+                { time: 132080, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 138000, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
+                { time: 144360, text: "i-get-a-good-feeling-yeah" },
+                { time: 146760, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 153959, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
+                { time: 185840, text: "lets-get-it-lets-get-it-i-know-you-got-the-good-feelin" },
+                { time: 188280, text: "lets-get-it-lets-get-it-gotta-love-the-life-that-we-livin" },
+                { time: 191599, text: "lets-get-it-lets-get-it-i-know-you-got-the-good-feelin" },
+                { time: 195400, text: "lets-get-it-lets-get-it-gotta-love-the-life-that-we-livin" },
+                { time: 197760, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 203599, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
+                { time: 211000, text: "i-get-a-good-feeling-yeah" },
+                { time: 212760, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
+                { time: 219280, text: "sometimes-i-get-a-good-feeling" }
+            ];
+
+            // Open lyrics tab immediately to avoid popup blocker
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const domain = isLocalhost ? 'localhost:3000' : 'lyrics.unmaintained.app';
+            const protocol = isLocalhost ? 'http' : 'https';
+            const initialUrl = `${protocol}://${lyricsSequence[0].text}.${domain}`;
+            let lyricsTab = window.open(initialUrl, 'lyrics-experience');
+            if (lyricsTab) lyricsTab.focus();
+
+            let currentLyricIndex = 0;
+            let lastLyric = lyricsSequence[0].text;
+
+            const updateLyrics = () => {
+                if (!player || typeof player.getCurrentTime !== 'function') return;
+
+                const currentTime = (player.getCurrentTime() * 1000); // Convert to milliseconds
+                const currentLyric = lyricsSequence.find(lyric =>
+                    currentTime >= lyric.time &&
+                    currentTime < (lyricsSequence[lyricsSequence.indexOf(lyric) + 1]?.time || Infinity)
+                );
+
+                if (currentLyric && currentLyric.text !== lastLyric) {
+                    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                    const domain = isLocalhost ? 'localhost:3000' : 'lyrics.unmaintained.app';
+                    const protocol = isLocalhost ? 'http' : 'https';
+                    const url = `${protocol}://${currentLyric.text}.${domain}`;
+
+                    if (!lyricsTab || lyricsTab.closed) {
+                        lyricsTab = window.open(url, 'lyrics-experience');
+                        if (lyricsTab) lyricsTab.focus();
+                    } else {
+                        lyricsTab.location.href = url;
+                    }
+
+                    lastLyric = currentLyric.text;
+                    console.log(`Updated to lyric: ${currentLyric.text} at ${currentTime}ms`);
+                }
+            };
+
+            // Poll the video time every 100ms
+            const lyricsInterval = setInterval(updateLyrics, 100);
+
+            // Clean up interval when video ends or is paused
+            setTimeout(() => {
+                if (player && typeof player.getPlayerState === 'function') {
+                    const checkVideoState = setInterval(() => {
+                        const state = player.getPlayerState();
+                        if (state === 0 || state === 2) { // ended or paused
+                            clearInterval(lyricsInterval);
+                            clearInterval(checkVideoState);
+                        }
+                    }, 1000);
+                }
+            }, 2000);
+
+            // Update button text
+            const button = document.querySelector('.play-button');
+            button.textContent = '🎵 Experience Started! 🎵';
+            button.disabled = true;
+        }
+    </script>
+</body>
+</html>
