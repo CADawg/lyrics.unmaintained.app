@@ -103,10 +103,13 @@
 
         <div class="video-container">
             <iframe
-                id="youtube-video"
-                src="https://www.youtube.com/embed/3OnnDqH6Wj8?enablejsapi=1"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
+                id="soundcloud-player"
+                width="100%"
+                height="300"
+                scrolling="no"
+                frameborder="no"
+                allow="autoplay"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A278705743&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
             </iframe>
         </div>
 
@@ -126,30 +129,28 @@
     </div>
 
     <script defer data-domain="lyrics.unmaintained.app" src="https://a.dbuidl.com/js/script.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        let player;
+        let widget;
         let lyricsStarted = false;
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-video', {
-                videoId: '3OnnDqH6Wj8',
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
+        // Initialize SoundCloud widget when page loads
+        window.addEventListener('load', function() {
+            const iframe = document.querySelector('#soundcloud-player');
+            widget = SC.Widget(iframe);
+
+            widget.bind(SC.Widget.Events.READY, function() {
+                console.log('SoundCloud player ready');
             });
-            window.player = player;
-        }
 
-        function onPlayerReady(event) {
-            console.log('YouTube player ready');
-        }
+            widget.bind(SC.Widget.Events.PLAY, function() {
+                console.log('SoundCloud player started playing');
+            });
 
-        function onPlayerStateChange(event) {
-            console.log('Player state changed:', event.data);
-            // YouTube player states: -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (cued)
-        }
+            widget.bind(SC.Widget.Events.PAUSE, function() {
+                console.log('SoundCloud player paused');
+            });
+        });
 
         function startLyricsExperience() {
             if (lyricsStarted) return;
@@ -157,12 +158,12 @@
 
             console.log('🎵 Starting lyrics experience!');
 
-            // Start the video
-            if (player && typeof player.playVideo === 'function') {
-                player.playVideo();
+            // Start the audio
+            if (widget) {
+                widget.play();
             }
 
-            // Define the lyrics timing - complete song mapped to YouTube captions
+            // Define the lyrics timing - complete song mapped to SoundCloud track
             const lyricsSequence = [
                 { time: 9639, text: "oh-sometimes-i-get-a-good-feeling-yeah" },
                 { time: 14360, text: "i-get-a-feeling-that-i-never-never-never-never-had-before-no-no" },
@@ -231,47 +232,45 @@
             let lastLyric = lyricsSequence[0].text;
 
             const updateLyrics = () => {
-                if (!player || typeof player.getCurrentTime !== 'function') return;
+                if (!widget) return;
 
-                const currentTime = (player.getCurrentTime() * 1000); // Convert to milliseconds
-                const currentLyric = lyricsSequence.find(lyric =>
-                    currentTime >= lyric.time &&
-                    currentTime < (lyricsSequence[lyricsSequence.indexOf(lyric) + 1]?.time || Infinity)
-                );
+                widget.getPosition(function(position) {
+                    const currentTime = position; // SoundCloud already returns milliseconds
+                    const currentLyric = lyricsSequence.find(lyric =>
+                        currentTime >= lyric.time &&
+                        currentTime < (lyricsSequence[lyricsSequence.indexOf(lyric) + 1]?.time || Infinity)
+                    );
 
-                if (currentLyric && currentLyric.text !== lastLyric) {
-                    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                    const domain = isLocalhost ? 'localhost:3000' : 'lyrics.unmaintained.app';
-                    const protocol = isLocalhost ? 'http' : 'https';
-                    const url = `${protocol}://${currentLyric.text}.${domain}`;
+                    if (currentLyric && currentLyric.text !== lastLyric) {
+                        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                        const domain = isLocalhost ? 'localhost:3000' : 'lyrics.unmaintained.app';
+                        const protocol = isLocalhost ? 'http' : 'https';
+                        const url = `${protocol}://${currentLyric.text}.${domain}`;
 
-                    if (!lyricsTab || lyricsTab.closed) {
-                        lyricsTab = window.open(url, 'lyrics-experience');
-                        if (lyricsTab) lyricsTab.focus();
-                    } else {
-                        lyricsTab.location.href = url;
+                        if (!lyricsTab || lyricsTab.closed) {
+                            lyricsTab = window.open(url, 'lyrics-experience');
+                            if (lyricsTab) lyricsTab.focus();
+                        } else {
+                            lyricsTab.location.href = url;
+                        }
+
+                        lastLyric = currentLyric.text;
+                        console.log(`Updated to lyric: ${currentLyric.text} at ${currentTime}ms`);
                     }
-
-                    lastLyric = currentLyric.text;
-                    console.log(`Updated to lyric: ${currentLyric.text} at ${currentTime}ms`);
-                }
+                });
             };
 
             // Poll the video time every 100ms
             const lyricsInterval = setInterval(updateLyrics, 100);
 
-            // Clean up interval when video ends or is paused
-            setTimeout(() => {
-                if (player && typeof player.getPlayerState === 'function') {
-                    const checkVideoState = setInterval(() => {
-                        const state = player.getPlayerState();
-                        if (state === 0 || state === 2) { // ended or paused
-                            clearInterval(lyricsInterval);
-                            clearInterval(checkVideoState);
-                        }
-                    }, 1000);
-                }
-            }, 2000);
+            // Clean up interval when audio ends or is paused
+            widget.bind(SC.Widget.Events.FINISH, function() {
+                clearInterval(lyricsInterval);
+            });
+
+            widget.bind(SC.Widget.Events.PAUSE, function() {
+                clearInterval(lyricsInterval);
+            });
 
             // Update button text
             const button = document.querySelector('.play-button');

@@ -111,7 +111,7 @@ app.get('*', (req, res) => {
                             document.title = lyricText;
 
                             // Update mock URL bar
-                            document.querySelector('.mock-url').textContent = subdomain + '.localhost:3000';
+                            document.querySelector('.mock-url').textContent = subdomain + '.lyrics.unmaintained.app';
                         }
                     }
 
